@@ -197,7 +197,7 @@ private:
 
 class TempStuff :public Stuff {
 public:
-
+	//无参构造函数
 	TempStuff()
 	{
 		reward = 0.0;
