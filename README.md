@@ -1,0 +1,2 @@
+# WageManager
+C++ Course Design
