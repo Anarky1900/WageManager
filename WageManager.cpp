@@ -211,6 +211,7 @@ public:
 		reward = 0.0;
 		tax = 0.0;
 		income = 0.0;
+		next = NULL;
 	}
 	//有参构造函数
 	TempStuff(string i, string n, string s, int a, string ad, double w,double r, double t, double in)
@@ -261,12 +262,12 @@ private:
 
 class List {
 public:
-	void CreateList_L(PList &L);//创建PL链表  传入表头 
-	void CreateList_L(TList &T);//创建TL链表  传入表头
+	void InitList_L(PList &L);//创建PL链表  传入表头 
+	void InitList_L(TList &T);//创建TL链表  传入表头
 	void Add(PList &L);//添加节点
 	void Add(TList &T);//添加节点
-	void Delete(PList &L);//删除节点
-	void Delete(TList &T);//删除节点
+	void Delete(PList &L);//删除PL节点
+	void Delete(TList &T);//删除TL节点
 	void Modify(PList &L);//修改链表
 	void Modify(TList &T);//修改链表
 	void Search(PList &L);//搜索PL
@@ -281,12 +282,43 @@ public:
 	void ShowList(TList &T);//打印Tp 链表
 	void Count(PList &L);//
 	void Count(TList &T);//
+	void CountIncome(PList &L);//计算实际工资
+	void CountIncome(TList &T);//计算实际工资
+	void SortList(PList &L);//排序
 };
+//计算PL实际工资
+void List::CountIncome(PList &L)
+{
+	double sum = 0;
+	PerStuff *p = L;
+	while (p->next != NULL)
+	{
+		p = p->next;
+		p->income = p->GetWage() + p->GetBounty() - p->GetPension() - p->GetHousingFund() - p->GetTax() - p->GetInsurance();
+	}
+}
+
+//计算TL实际工资
+void List::CountIncome(TList &T)
+{
+	double sum = 0;
+	TempStuff *p = T;
+	while (p->next != NULL)
+	{
+		p = p->next;
+		p->income = p->GetWage() + p->GetReward() - p->GetTax();
+	}
+}
+
+void List::Count(PList &L)
+{
+
+}
 
 //创建PL链表
-void List::CreateList_L(PList &L)//输入头结点参数，节点个数
+void List::InitList_L(PList &L)//输入头结点参数
 {
-	string id="0";//编号
+	/*string id="0";//编号
 	string name = "0";//姓名
 	string sex = "0";//性别
 	int age = 0;//年龄
@@ -298,11 +330,11 @@ void List::CreateList_L(PList &L)//输入头结点参数，节点个数
 	double tax = 0;//所得税
 	double insurance = 0;//医疗保险
 	double income = 0;//实发工资
-	int n = 0;
+	int n = 0;*/
 
 	PerStuff *p = NULL;
 	L = new PerStuff();//初始化头结点
-	cout << "请输入节点数：";
+	/*cout << "请输入节点数：";
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
@@ -343,10 +375,11 @@ void List::CreateList_L(PList &L)//输入头结点参数，节点个数
 		p->next = L->next;//为空
 		L->next = p;//逆序插入
 	}
+	CountIncome(L);*/
 }
 
 //创TL链表
-void List::CreateList_L(TList &L)//输入头结点参数，节点个数
+void List::InitList_L(TList &T)//输入头结点参数
 {
 	string id= "0";//编号
 	string name = "0";//姓名
@@ -360,8 +393,8 @@ void List::CreateList_L(TList &L)//输入头结点参数，节点个数
 	int n = 0;
 
 	TempStuff *p = NULL;
-	L = new TempStuff();//初始化头结点
-	cout << "请输入节点数：";
+	T = new TempStuff();//初始化头结点
+	/*cout << "请输入节点数：";
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
@@ -391,8 +424,185 @@ void List::CreateList_L(TList &L)//输入头结点参数，节点个数
 		cin >> tax;
 		p->SetTax(tax);
 
-		p->next = L->next;//为空
-		L->next = p;//逆序插入
+		p->next = T->next;//为空
+		T->next = p;//逆序插入
+	}
+	CountIncome(T);*/
+}
+
+//添加PL节点
+void List::Add(PList &L)
+{
+	//在链表末尾添加节点
+	string id = "0";//编号
+	string name = "0";//姓名
+	string sex = "0";//性别
+	int age = 0;//年龄
+	string adr = "0";//家庭住址
+	double wage = 0;//基本职务工资
+	double bounty = 0;//岗位津贴
+	double pension = 0;//养老金
+	double housingFund = 0;//住房公积金
+	double tax = 0;//所得税
+	double insurance = 0;//医疗保险
+	double income = 0;//实发工资
+	int n = 0;
+
+	PerStuff *tp = L;
+	while (tp->next!=NULL)
+		tp = tp->next;
+	do {
+			PerStuff *p = new PerStuff();//生成新节点
+			cout << "\n请输入第" << Length(L) + 1 << "个节点信息：\n" << "编号：";
+			cin >> id;
+			p->SetId(id);
+			cout << "姓名";
+			cin >> name;
+			p->SetName(name);
+			cout << "性别：";
+			cin >> sex;
+			p->SetSex(sex);
+			cout << "年龄：";
+			cin >> age;
+			p->SetAge(age);
+			cout << "家庭住址：";
+			cin >> adr;
+			p->SetAdr(adr);
+			cout << "基本职务工资：";
+			cin >> wage;
+			p->SetWage(wage);
+			cout << "岗位津贴";
+			cin >> bounty;
+			p->SetBounty(bounty);
+			cout << "养老金:";
+			cin >> pension;
+			p->SetPension(pension);
+			cout << "住房公积金:";
+			cin >> housingFund;
+			p->SetHousingFund(housingFund);
+			cout << "所得税:";
+			cin >> tax;
+			p->SetTax(tax);
+			cout << "医疗保险:";
+			cin >> insurance;
+			p->SetInsurance(insurance);
+			tp->next = p;
+			tp = p;
+			cout << "\n1.继续输入\t0.退出";
+			cin >> n;
+		} while (n != 0);
+	CountIncome(L);
+}
+
+//添加TL节点
+void List::Add(TList &T)
+{
+	//在链表末尾添加节点
+	string id = "0";//编号
+	string name = "0";//姓名
+	string sex = "0";//性别
+	int age = 0;//年龄
+	string adr = "0";//家庭住址
+	double wage = 0;//基本职务工资
+	double reward = 0;//奖金
+	double tax = 0;//所得税
+	double income = 0;//实发工资
+	int n = 0;
+
+	TempStuff *tp = T;
+	while (tp->next)
+		tp = tp->next;
+	do {
+		TempStuff *p = new TempStuff();//生成新节点
+		cout << "\n请输入第" << Length(T) + 1 << "个节点信息：\n" << "编号：";
+		cin >> id;
+		p->SetId(id);
+		cout << "姓名";
+		cin >> name;
+		p->SetName(name);
+		cout << "性别：";
+		cin >> sex;
+		p->SetSex(sex);
+		cout << "年龄：";
+		cin >> age;
+		p->SetAge(age);
+		cout << "家庭住址：";
+		cin >> adr;
+		p->SetAdr(adr);
+		cout << "基本职务工资：";
+		cin >> wage;
+		p->SetWage(wage);
+		cout << "奖金";
+		cin >> reward;
+		p->SetReward(reward);
+		cout << "所得税:";
+		cin >> tax;
+		p->SetTax(tax);
+		tp->next = p;
+		tp = p;
+		cout << "\n1.继续输入\t0.退出";
+		cin >> n;
+	} while (n != 0);
+	CountIncome(T);
+}
+
+//删除PL节点     
+void List::Delete(PList &L)
+{
+	//按id查找，若存在，则删除，若不存在，则打印错误
+	string id;
+	PerStuff *p = L;
+	cout << "请输入要删除的id:";
+	cin >> id;
+	while (p->next != NULL&&p->next->GetId()!=id)
+	{
+		p = p->next;
+	}
+	if (p->next->GetId()== id&&p->next->next!=NULL)
+	{
+		PerStuff *tp = p->next;
+		p->next = tp->next;
+		Delete(tp);
+	}
+	else if (p->next->next == NULL && p->next->GetId() == id)
+	{
+		PerStuff *tp = p->next;
+		p->next = NULL;
+		delete(tp);
+	}
+	else if (p->next == NULL&&p->next->GetId() != id)
+	{
+		cout << "不存在该id!!!";
+	}
+}
+
+//删除TL节点     
+void List::Delete(TList &T)
+{
+	//按id查找，若存在，则删除，若不存在，则打印错误
+	string id;
+	TempStuff *p = T;
+	cout << "请输入要删除的id:";
+	cin >> id;
+	while (p->next != NULL&&p->next->GetId() != id)
+	{
+		p = p->next;
+	}
+	if (p->next->GetId() == id&&p->next->next != NULL)
+	{
+		TempStuff *tp = p->next;
+		p->next = tp->next;
+		Delete(tp);
+	}
+	else if (p->next->next == NULL && p->next->GetId() == id)
+	{
+		TempStuff *tp = p->next;
+		p->next = NULL;
+		delete(tp);
+	}
+	else if (p->next == NULL&&p->next->GetId() != id)
+	{
+		cout << "不存在该id!!!";
 	}
 }
 
@@ -493,6 +703,7 @@ void List::Modify(PList &L)//输入表头，id
 			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
 			<< "\n岗位津贴：" << "\n养老金:" << p->GetPension() << "\n住房公积金：" << p->GetHousingFund()
 			<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome() << "\n修改成功！";
+		p->income = p->GetWage() + p->GetBounty() - p->GetPension() - p->GetHousingFund() - p->GetTax() - p->GetInsurance();
 	}
 }
 
@@ -554,6 +765,7 @@ void List::Modify(TList &T)//输入表头，id
 		cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
 			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
 			<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax() << "\n实发工资:" << p->GetIncome() << "\n修改成功！";
+		p->income = p->GetWage() + p->GetReward() - p->GetTax();
 	}
 }
 
@@ -642,7 +854,6 @@ void List::Copy(TList &T, TList &T1)
 	}
 }
 
-
 //打印Pl   
 void List::ShowList(PList &L)
 {
@@ -680,6 +891,32 @@ void List::ShowList(TList &T)
 
 }
 
+//排序    ????
+void List::SortList(PList &L)
+{
+	//比较id进行排序，按从小到大的升序排列
+	PerStuff *p = L;  
+	PerStuff *p1 = p;
+	while (p->next != NULL)
+	{
+		while (p1->next != NULL)
+		{
+			if (p1->next->GetId() <p->next->GetId())
+			{
+				PerStuff *tp4 = p->next;//前一个
+				PerStuff *tp2 = p1->next;//后一个
+				PerStuff *tp3 = tp2->next;
+				p->next = tp2;
+				tp2->next = tp4->next;
+				p1->next = tp4;
+				tp4->next = tp3;
+			}
+			p1 = p1->next;
+		}
+		p = p->next;
+	}
+}
+
 int main()
 {
 	/*cout<< "*************************************************\n"
@@ -696,16 +933,13 @@ int main()
 		<< "*************************************************\n"
 		<< endl;*/
 	List L;
-	PList p, p1 = new PerStuff();
+	PList p, p1;//
 	int i = 0;
 
-	L.CreateList_L(p);
-	
-	
-//	L.Modify(t);
-	L.Copy(p,p1);
-	L.ShowList(p1);
-
+	L.InitList_L(p);
+	L.Add(p);
+	L.Modify(p);
+	L.SortList(p);
 	cin >> i;
 	return ERROR;
 }
