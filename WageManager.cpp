@@ -3,15 +3,18 @@
 
 using namespace std;
 
-#define ERROR 0;
+typedef int Status;
 
-class Stuff 
+#define ERROR 0;
+#define ok 1;
+
+class Stuff
 {
 public:
 	//无参构造函数
 	Stuff()
 	{
-		id ="0";
+		id = "0";
 		name = "0";
 		sex = "0";
 		age = 0;
@@ -34,57 +37,57 @@ public:
 	{
 		id = i;
 	}
-    //返回编号
+	//返回编号
 	string GetId()
 	{
 		return id;
 	}
-    //设置名字
+	//设置名字
 	void SetName(string n)
 	{
-		name=n;
+		name = n;
 	}
-    //返回名字
+	//返回名字
 	string GetName()
 	{
 		return name;
 	}
-    //设置性别
+	//设置性别
 	void SetSex(string s)
 	{
 		sex = s;
 	}
-    //返回性别
+	//返回性别
 	string GetSex()
 	{
-		return id;
+		return sex;
 	}
-    //设置年龄
+	//设置年龄
 	void SetAge(int a)
 	{
 		age = a;
 	}
-    //返回年龄
+	//返回年龄
 	int GetAge()
 	{
 		return age;
 	}
-    //设置家庭住址
+	//设置家庭住址
 	void SetAdr(string ad)
 	{
 		adr = ad;
 	}
-    //返回家庭住址
+	//返回家庭住址
 	string GetAdr()
 	{
 		return adr;
 	}
-    //设置基本职务工资
+	//设置基本职务工资
 	void SetWage(double w)
 	{
 		wage = w;
 	}
-    //返回基本职务工资
+	//返回基本职务工资
 	double GetWage()
 	{
 		return wage;
@@ -97,7 +100,7 @@ private:
 	int age;//年龄
 	string adr;//家庭住址
 	double wage;//基本职务工资
-	
+
 };
 
 typedef class PerStuff :public Stuff
@@ -116,7 +119,7 @@ public:
 		next = NULL;
 	}
 	//有参构造函数
-	PerStuff(string id, string name, string sex, int age, string adr, double wage,double b, double p, double h, double t, double i, double in)
+	PerStuff(string id, string name, string sex, int age, string adr, double wage, double b, double p, double h, double t, double i, double in)
 	{
 		Stuff(id, name, sex, age, adr, wage);
 		SetBounty(b);
@@ -133,9 +136,9 @@ public:
 		bounty = b;
 	}
 	//返回津贴
-	 double GetBounty()
+	double GetBounty()
 	{
-		 return bounty;
+		return bounty;
 	}
 	//设置养老金
 	void SetPension(double p)
@@ -187,11 +190,6 @@ public:
 	{
 		return income;
 	}
-	//打印所有信息???
-	void GetInfo()
-	{
-		cout << "";
-	}
 private:
 	double bounty;//岗位津贴
 	double pension;//养老金
@@ -200,7 +198,7 @@ private:
 	double insurance;//医疗保险
 	double income;//实发工资
 	PerStuff *next;
-}PerStuff,*PList;//*PList为头结点
+}PerStuff, *PList;//*PList为头结点
 
 typedef class TempStuff :public Stuff {
 public:
@@ -214,9 +212,9 @@ public:
 		next = NULL;
 	}
 	//有参构造函数
-	TempStuff(string i, string n, string s, int a, string ad, double w,double r, double t, double in)
+	TempStuff(string i, string n, string s, int a, string ad, double w, double r, double t, double in)
 	{
-		Stuff( i,  n, s, a,  ad, w);
+		Stuff(i, n, s, a, ad, w);
 		SetReward(r);
 		SetTax(t);
 		SetIncome(in);
@@ -258,7 +256,7 @@ private:
 	double tax;//所得税
 	double income;//实发工资
 	TempStuff *next;
-}TempStuff,*TList;//*TList为头结点
+}TempStuff, *TList;//*TList为头结点
 
 class List {
 public:
@@ -266,16 +264,16 @@ public:
 	void InitList_L(TList &T);//创建TL链表  传入表头
 	void Add(PList &L);//添加节点
 	void Add(TList &T);//添加节点
-	void Delete(PList &L);//删除PL节点
-	void Delete(TList &T);//删除TL节点
+	Status Delete(PList &L);//删除PL节点
+	Status Delete(TList &T);//删除TL节点
 	void Modify(PList &L);//修改链表
 	void Modify(TList &T);//修改链表
 	void Search(PList &L);//搜索PL
 	void Search(TList &T);//搜索TL
 	bool IsEmpty(PList &L);//是否为空链表
 	bool IsEmpty(TList &T);//是否为空链表
-	void Copy(PList &L,PList &L1);//复制PL链表           
-	void Copy(TList &T,TList &T1);//复制TL链表          
+	void Copy(PList &L, PList &L1);//复制PL链表           
+	void Copy(TList &T, TList &T1);//复制TL链表          
 	int Length(PList &L);//长度
 	int Length(TList &T);//长度
 	void ShowList(PList &L);//打印Lp 链表
@@ -284,13 +282,17 @@ public:
 	void Count(TList &T);//
 	void CountIncome(PList &L);//计算实际工资
 	void CountIncome(TList &T);//计算实际工资
-	void SortList(PList &L);//排序
 };
 //计算PL实际工资
 void List::CountIncome(PList &L)
 {
 	double sum = 0;
 	PerStuff *p = L;
+	if (IsEmpty(L))
+	{
+		cout << "这是空表！！！";
+		return;
+	}
 	while (p->next != NULL)
 	{
 		p = p->next;
@@ -303,6 +305,11 @@ void List::CountIncome(TList &T)
 {
 	double sum = 0;
 	TempStuff *p = T;
+	if (IsEmpty(T))
+	{
+		cout << "这是空表！！！";
+		return;
+	}
 	while (p->next != NULL)
 	{
 		p = p->next;
@@ -310,15 +317,29 @@ void List::CountIncome(TList &T)
 	}
 }
 
+//统计工资总额，平均值
 void List::Count(PList &L)
 {
-
+	;
 }
 
 //创建PL链表
 void List::InitList_L(PList &L)//输入头结点参数
 {
-	/*string id="0";//编号
+	L = new PerStuff();
+}
+
+//创TL链表
+void List::InitList_L(TList &T)//输入头结点参数
+{
+	T = new TempStuff();
+}
+
+//添加PL节点
+void List::Add(PList &L)
+{
+	//在链表末尾添加节点
+	string id = "0";//编号
 	string name = "0";//姓名
 	string sex = "0";//性别
 	int age = 0;//年龄
@@ -330,17 +351,15 @@ void List::InitList_L(PList &L)//输入头结点参数
 	double tax = 0;//所得税
 	double insurance = 0;//医疗保险
 	double income = 0;//实发工资
-	int n = 0;*/
+	int n = 0;
 
-	PerStuff *p = NULL;
-	L = new PerStuff();//初始化头结点
-	/*cout << "请输入节点数：";
-	cin >> n;
-	for (int i = 0; i < n; i++)
-	{
-		p = new PerStuff();//生成新节点
-		cout << "\n请输入第"<<i+1<<"个节点信息：\n" << "编号：";
-		cin>>id;
+	PerStuff *tp = L;
+	while (tp->next != NULL)
+		tp = tp->next;
+	do {
+		PerStuff *p = new PerStuff();//生成新节点
+		cout << "\n请输入第" << Length(L) + 1 << "个节点信息：\n" << "编号：";
+		cin >> id;
 		p->SetId(id);
 		cout << "姓名";
 		cin >> name;
@@ -372,125 +391,11 @@ void List::InitList_L(PList &L)//输入头结点参数
 		cout << "医疗保险:";
 		cin >> insurance;
 		p->SetInsurance(insurance);
-		p->next = L->next;//为空
-		L->next = p;//逆序插入
-	}
-	CountIncome(L);*/
-}
-
-//创TL链表
-void List::InitList_L(TList &T)//输入头结点参数
-{
-	string id= "0";//编号
-	string name = "0";//姓名
-	string sex= "0";//性别
-	int age=0;//年龄
-	string adr = "0";//家庭住址
-	double wage=0;//基本职务工资
-	double reward=0;//奖金
-	double tax=0;//所得税
-	double income=0;//实发工资
-	int n = 0;
-
-	TempStuff *p = NULL;
-	T = new TempStuff();//初始化头结点
-	/*cout << "请输入节点数：";
-	cin >> n;
-	for (int i = 0; i < n; i++)
-	{
-		p = new TempStuff();//生成新节点
-		cout << "\n请输入第" << i + 1 << "个节点信息：\n" << "编号：";
-		cin >> id;
-		p->SetId(id);
-		cout << "姓名";
-		cin >> name;
-		p->SetName(name);
-		cout << "性别：";
-		cin >> sex;
-		p->SetSex(sex);
-		cout << "年龄：";
-		cin >> age;
-		p->SetAge(age);
-		cout << "家庭住址：";
-		cin >> adr;
-		p->SetAdr(adr);
-		cout << "基本职务工资：";
-		cin >> wage;
-		p->SetWage(wage);
-		cout << "奖金";
-		cin >> reward;
-		p->SetReward(reward);
-		cout << "所得税:";
-		cin >> tax;
-		p->SetTax(tax);
-
-		p->next = T->next;//为空
-		T->next = p;//逆序插入
-	}
-	CountIncome(T);*/
-}
-
-//添加PL节点
-void List::Add(PList &L)
-{
-	//在链表末尾添加节点
-	string id = "0";//编号
-	string name = "0";//姓名
-	string sex = "0";//性别
-	int age = 0;//年龄
-	string adr = "0";//家庭住址
-	double wage = 0;//基本职务工资
-	double bounty = 0;//岗位津贴
-	double pension = 0;//养老金
-	double housingFund = 0;//住房公积金
-	double tax = 0;//所得税
-	double insurance = 0;//医疗保险
-	double income = 0;//实发工资
-	int n = 0;
-
-	PerStuff *tp = L;
-	while (tp->next!=NULL)
-		tp = tp->next;
-	do {
-			PerStuff *p = new PerStuff();//生成新节点
-			cout << "\n请输入第" << Length(L) + 1 << "个节点信息：\n" << "编号：";
-			cin >> id;
-			p->SetId(id);
-			cout << "姓名";
-			cin >> name;
-			p->SetName(name);
-			cout << "性别：";
-			cin >> sex;
-			p->SetSex(sex);
-			cout << "年龄：";
-			cin >> age;
-			p->SetAge(age);
-			cout << "家庭住址：";
-			cin >> adr;
-			p->SetAdr(adr);
-			cout << "基本职务工资：";
-			cin >> wage;
-			p->SetWage(wage);
-			cout << "岗位津贴";
-			cin >> bounty;
-			p->SetBounty(bounty);
-			cout << "养老金:";
-			cin >> pension;
-			p->SetPension(pension);
-			cout << "住房公积金:";
-			cin >> housingFund;
-			p->SetHousingFund(housingFund);
-			cout << "所得税:";
-			cin >> tax;
-			p->SetTax(tax);
-			cout << "医疗保险:";
-			cin >> insurance;
-			p->SetInsurance(insurance);
-			tp->next = p;
-			tp = p;
-			cout << "\n1.继续输入\t0.退出";
-			cin >> n;
-		} while (n != 0);
+		tp->next = p;
+		tp = p;
+		cout << "\n1.继续输入\t0.退出";
+		cin >> n;
+	} while (n != 0);
 	CountIncome(L);
 }
 
@@ -546,63 +451,99 @@ void List::Add(TList &T)
 	CountIncome(T);
 }
 
-//删除PL节点     
-void List::Delete(PList &L)
+//Tp  判断
+bool List::IsEmpty(TList &T)
+{
+	if (T->next == NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//Lp  判断
+bool List::IsEmpty(PList &L)
+{
+	if (L->next == NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//删除PL节点                                               
+Status List::Delete(PList &L)
 {
 	//按id查找，若存在，则删除，若不存在，则打印错误
 	string id;
 	PerStuff *p = L;
-	cout << "请输入要删除的id:";
-	cin >> id;
-	while (p->next != NULL&&p->next->GetId()!=id)
+	if (IsEmpty(L))
 	{
-		p = p->next;
+		cout << "这是空表！！";
+		return ERROR;
 	}
-	if (p->next->GetId()== id&&p->next->next!=NULL)
+	else
 	{
-		PerStuff *tp = p->next;
-		p->next = tp->next;
-		Delete(tp);
-	}
-	else if (p->next->next == NULL && p->next->GetId() == id)
-	{
-		PerStuff *tp = p->next;
-		p->next = NULL;
-		delete(tp);
-	}
-	else if (p->next == NULL&&p->next->GetId() != id)
-	{
-		cout << "不存在该id!!!";
+		cout << "请输入要删除的id：";
+		cin >> id;
+		while (p->next != NULL)
+		{
+			if (p->next->GetId() == id)
+			{
+				PerStuff *tp = p->next;
+				p->next = tp->next;
+				cout << "\n删除成功！";
+				free(tp);
+				return ok;
+			}
+			p = p->next;
+		}
+		if (p->next == NULL)
+		{
+			cout << "没有该成员！！";
+			return ERROR;
+		}
 	}
 }
 
 //删除TL节点     
-void List::Delete(TList &T)
+Status List::Delete(TList &T)
 {
 	//按id查找，若存在，则删除，若不存在，则打印错误
 	string id;
 	TempStuff *p = T;
-	cout << "请输入要删除的id:";
-	cin >> id;
-	while (p->next != NULL&&p->next->GetId() != id)
+	if (IsEmpty(T))
 	{
-		p = p->next;
+		cout << "这是空表！！";
+		return ERROR;
 	}
-	if (p->next->GetId() == id&&p->next->next != NULL)
+	else
 	{
-		TempStuff *tp = p->next;
-		p->next = tp->next;
-		Delete(tp);
-	}
-	else if (p->next->next == NULL && p->next->GetId() == id)
-	{
-		TempStuff *tp = p->next;
-		p->next = NULL;
-		delete(tp);
-	}
-	else if (p->next == NULL&&p->next->GetId() != id)
-	{
-		cout << "不存在该id!!!";
+		cout << "请输入要删除的id：";
+		cin >> id;
+		while (p->next != NULL)
+		{
+			if (p->next->GetId() == id)
+			{
+				TempStuff *tp = p->next;
+				p->next = tp->next;
+				cout << "\n删除成功！";
+				free(tp);
+				return ok;
+			}
+			p = p->next;
+		}
+		if (p->next == NULL)
+		{
+			cout << "没有该成员！！";
+			return ERROR;
+		}
 	}
 }
 
@@ -647,63 +588,69 @@ void List::Modify(PList &L)//输入表头，id
 	double tax = 0;//所得税
 	double insurance = 0;//医疗保险
 
-	PerStuff *p = L->next;
-	int l=1;//计数器
+	PerStuff *p = L;
+	int l = 0;//计数器
+	if (IsEmpty(L))
+	{
+		cout << "这是空表！！！";
+		return;
+	}
 	cout << "\n请输入要修改的职工id:";
 	cin >> id;
-	while (p->GetId() != id&&p->next!=NULL)
+	while (p->next != NULL)
 	{
 		p = p->next;
+		if (p->GetId() == id)
+		{
+			cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
+				<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
+				<< "\n岗位津贴：" << "\n养老金:" << p->GetPension() << "\n住房公积金：" << p->GetHousingFund()
+				<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome();
+			cout << "\n\n请输入修改的数据：\n编号：";
+			cin >> id;
+			p->SetId(id);
+			cout << "姓名";
+			cin >> name;
+			p->SetName(name);
+			cout << "性别：";
+			cin >> sex;
+			p->SetSex(sex);
+			cout << "年龄：";
+			cin >> age;
+			p->SetAge(age);
+			cout << "家庭住址：";
+			cin >> adr;
+			p->SetAdr(adr);
+			cout << "基本职务工资：";
+			cin >> wage;
+			p->SetWage(wage);
+			cout << "岗位津贴";
+			cin >> bounty;
+			p->SetBounty(bounty);
+			cout << "养老金:";
+			cin >> pension;
+			p->SetPension(pension);
+			cout << "住房公积金:";
+			cin >> housingFund;
+			p->SetHousingFund(housingFund);
+			cout << "所得税:";
+			cin >> tax;
+			p->SetTax(tax);
+			cout << "医疗保险:";
+			cin >> insurance;
+			p->SetInsurance(insurance);
+			cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
+				<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
+				<< "\n岗位津贴：" << "\n养老金:" << p->GetPension() << "\n住房公积金：" << p->GetHousingFund()
+				<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome() << "\n修改成功！";
+			p->income = p->GetWage() + p->GetBounty() - p->GetPension() - p->GetHousingFund() - p->GetTax() - p->GetInsurance();
+			return;
+		}
 		l++;
 	}
-	if (l >= Length(L)&&p->GetId()!=id)//索引完链表未找到
+	if (l >= Length(L) && p->GetId() != id)//索引完链表未找到
 	{
 		cout << "\n表中没有该职工！";
-	}
-	if (l <= Length(L) && p->GetId() == id)
-	{
-		cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
-			<< "\n年龄：" << p->GetAge()<< "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
-			<< "\n岗位津贴：" <<"\n养老金:"<<p->GetPension()<< "\n住房公积金：" << p->GetHousingFund()
-			<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome();
-		cout<< "\n\n请输入修改的数据：\n编号：";
-		cin >> id;
-		p->SetId(id);
-		cout << "姓名";
-		cin >> name;
-		p->SetName(name);
-		cout << "性别：";
-		cin >> sex;
-		p->SetSex(sex);
-		cout << "年龄：";
-		cin >> age;
-		p->SetAge(age);
-		cout << "家庭住址：";
-		cin >> adr;
-		p->SetAdr(adr);
-		cout << "基本职务工资：";
-		cin >> wage;
-		p->SetWage(wage);
-		cout << "岗位津贴";
-		cin >> bounty;
-		p->SetBounty(bounty);
-		cout << "养老金:";
-		cin >> pension;
-		p->SetPension(pension);
-		cout << "住房公积金:";
-		cin >> housingFund;
-		p->SetHousingFund(housingFund);
-		cout << "所得税:";
-		cin >> tax;
-		p->SetTax(tax);
-		cout << "医疗保险:";
-		cin >> insurance;
-		p->SetInsurance(insurance);
-		cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
-			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
-			<< "\n岗位津贴：" << "\n养老金:" << p->GetPension() << "\n住房公积金：" << p->GetHousingFund()
-			<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome() << "\n修改成功！";
-		p->income = p->GetWage() + p->GetBounty() - p->GetPension() - p->GetHousingFund() - p->GetTax() - p->GetInsurance();
 	}
 }
 
@@ -713,87 +660,64 @@ void List::Modify(TList &T)//输入表头，id
 	string id = "-1";//编号
 	string name = "0";//姓名
 	string sex = "0";//性别
-	int age;//年龄
+	int age = 0;//年龄
 	string adr = "0";//家庭住址
-	double wage;//基本职务工资
-	double reward;//奖金
-	double tax;//所得税
+	double wage = 0;//基本职务工资
+	double reward = 0;//奖金
+	double tax = 0;//所得税
+	double income = 0;//实发工资
 
-
-	TempStuff *p = T->next;
-	int l = 1;//计数器
+	TempStuff *p = T;
+	int l = 0;//计数器
+	if (IsEmpty(T))
+	{
+		cout << "这是空表！！！";
+		return;
+	}
 	cout << "\n请输入要修改的职工id:";
 	cin >> id;
-	while (p->GetId() != id&&p->next!=NULL)
+	while (p->next != NULL)
 	{
 		p = p->next;
+		if (p->GetId() == id)
+		{
+			cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
+				<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
+				<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax() << "\n实发工资:" << p->GetIncome();
+			cout << "\n\n请输入修改的数据：\n编号：";
+			cin >> id;
+			p->SetId(id);
+			cout << "姓名";
+			cin >> name;
+			p->SetName(name);
+			cout << "性别：";
+			cin >> sex;
+			p->SetSex(sex);
+			cout << "年龄：";
+			cin >> age;
+			p->SetAge(age);
+			cout << "家庭住址：";
+			cin >> adr;
+			p->SetAdr(adr);
+			cout << "基本职务工资：";
+			cin >> wage;
+			p->SetWage(wage);
+			cout << "奖金";
+			cin >> reward;
+			p->SetReward(reward);
+			cout << "所得税:";
+			cin >> tax;
+			cout << "\n\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
+				<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
+				<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax() << "\n实发工资:" << p->GetIncome();
+			CountIncome(T);
+			return;
+		}
 		l++;
 	}
-	if (l >= Length(T)&&p->GetId()!=id)
+	if (l >= Length(T) && p->GetId() != id)//索引完链表未找到
 	{
 		cout << "\n表中没有该职工！";
-	}
-	if(l<=Length(T)&&p->GetId()==id)
-	{
-		cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
-			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
-			<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax() << "\n实发工资:" << p->GetIncome();
-		cout << "\n\n请输入修改的数据:\n编号：";
-		cin >> id;
-		p->SetId(id);
-		cout << "姓名";
-		cin >> name;
-		p->SetName(name);
-		cout << "性别：";
-		cin >> sex;
-		p->SetSex(sex);
-		cout << "年龄：";
-		cin >> age;
-		p->SetAge(age);
-		cout << "家庭住址：";
-		cin >> adr;
-		p->SetAdr(adr);
-		cout << "基本职务工资：";
-		cin >> wage;
-		p->SetWage(wage);
-		cout << "奖金";
-		cin >> reward;
-		p->SetReward(reward);
-		cout << "所得税:";
-		cin >> tax;
-		p->SetTax(tax);
-		cout << "\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
-			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
-			<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax() << "\n实发工资:" << p->GetIncome() << "\n修改成功！";
-		p->income = p->GetWage() + p->GetReward() - p->GetTax();
-	}
-}
-
-//Tp  判断
-bool List::IsEmpty(TList &T)
-{
-	if (T->next == NULL)
-	{
-		cout << "这是空表！";
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-//Lp  判断
-bool List::IsEmpty(PList &L)
-{
-	if (L->next == NULL)
-	{
-		cout << "这是空表！";
-		return false;
-	}
-	else
-	{
-		return true;
 	}
 }
 
@@ -858,19 +782,19 @@ void List::Copy(TList &T, TList &T1)
 void List::ShowList(PList &L)
 {
 	PerStuff *p = L;
-	if (p->next==NULL)
+	if (p->next == NULL)
 	{
 		cout << "\n这是空链表！";
 	}
-	while (p->next!=NULL)
+	while (p->next != NULL)
 	{
 		p = p->next;
 		cout << "\n\n编号：" << p->GetId() << "\n姓名：" << p->GetName() << "\n性别：" << p->GetSex()
 			<< "\n年龄：" << p->GetAge() << "\n家庭住址：" << p->GetAdr() << "\n基本职务工资：" << p->GetWage()
-			<< "\n岗位津贴：" <<"\n养老金:"<<p->GetPension()<< "\n住房公积金：" << p->GetHousingFund()
+			<< "\n岗位津贴：" << "\n养老金:" << p->GetPension() << "\n住房公积金：" << p->GetHousingFund()
 			<< "\n所得税：" << p->GetTax() << "\n医疗保险：" << p->GetInsurance() << "\n实际收入：" << p->GetIncome();
 	}
-	
+
 }
 
 //打印Tl    
@@ -891,55 +815,103 @@ void List::ShowList(TList &T)
 
 }
 
-//排序    ????
-void List::SortList(PList &L)
+//搜索PL
+void List::Search(PList &L)
 {
-	//比较id进行排序，按从小到大的升序排列
-	PerStuff *p = L;  
-	PerStuff *p1 = p;
-	while (p->next != NULL)
+	string id;
+	PerStuff *p = L;
+	cout << "请输入要寻找的id" << endl;
+	cin >> id;
+	if (IsEmpty(L))
 	{
-		while (p1->next != NULL)
-		{
-			if (p1->next->GetId() <p->next->GetId())
-			{
-				PerStuff *tp4 = p->next;//前一个
-				PerStuff *tp2 = p1->next;//后一个
-				PerStuff *tp3 = tp2->next;
-				p->next = tp2;
-				tp2->next = tp4->next;
-				p1->next = tp4;
-				tp4->next = tp3;
-			}
-			p1 = p1->next;
-		}
+		cout << "\n这是空表！";
+		return;
+	}
+	while (p->next != NULL&&p->next->GetId() != id)
+	{
 		p = p->next;
 	}
+	p = p->next;
+	cout << "姓名：" << p->GetName() << endl
+		<< "性别：" << p->GetSex() << endl
+		<< "年龄：" << p->GetAge() << endl
+		<< "家庭住址：" << p->GetAdr() << endl
+		<< "基本职务工资：" << p->GetWage() << endl
+		<< "岗位津贴：" << p->GetBounty() << endl
+		<< "养老金：" << p->GetPension() << endl
+		<< "住房公积金：" << p->GetHousingFund() << endl
+		<< "所得税：" << p->GetTax() << endl
+		<< "医疗保险：" << p->GetInsurance() << endl
+		<< "实发工资：" << p->GetIncome() << endl;
+
+}
+
+//搜索TL
+void List::Search(TList &T)
+{
+	string id;
+	TempStuff *p = T;
+	cout << "请输入要寻找的id" << endl;
+	cin >> id;
+	if (IsEmpty(T))
+	{
+		cout << "\n这是空表！";
+		return;
+	}
+	while (p->next != NULL&&p->next->GetId() != id)
+	{
+		p = p->next;
+	}
+	p = p->next;
+	cout << "姓名：" << p->GetName() << endl
+		<< "性别：" << p->GetSex() << endl
+		<< "年龄：" << p->GetAge() << endl
+		<< "家庭住址：" << p->GetAdr() << endl
+		<< "基本职务工资：" << p->GetWage() << endl
+		<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax()
+		<< "实发工资：" << p->GetIncome() << endl;
 }
 
 int main()
 {
-	/*cout<< "*************************************************\n"
-		<< "*\t\t\t\t\t\t*\n"
-		<< "*\t\t职工工资信息管理系统\t\t*\n"
-		<< "*\t\t\t\t\t\t*\n"
-		<< "*\t\t1.输入职工信息\t\t\t*\n"
-		<< "*\t\t2.插入职工信息\t\t\t*\n"
-		<< "*\t\t3.查询职工信息\t\t\t*\n"
-		<< "*\t\t4.修改职工信息\t\t\t*\n"
-		<< "*\t\t5.删除职工信息\t\t\t*\n"
-		<< "*\t\t6.\t\t\t*\n"
-		<< "*\t\t\t\t\t\t*\n"
-		<< "*************************************************\n"
-		<< endl;*/
 	List L;
-	PList p, p1;//
-	int i = 0;
-
+	PList p, p1;
 	L.InitList_L(p);
-	L.Add(p);
-	L.Modify(p);
-	L.SortList(p);
-	cin >> i;
+	int i = 0;
+	do {
+		cout << "\n*************************************************\n"
+			<< "*\t\t\t\t\t\t*\n"
+			<< "*\t\t职工工资信息管理系统\t\t*\n"
+			<< "*\t\t\t\t\t\t*\n"
+			<< "*\t\t1.输入职工信息\t\t\t*\n"
+			<< "*\t\t2.插入职工信息\t\t\t*\n"
+			<< "*\t\t3.查询职工信息\t\t\t*\n"
+			<< "*\t\t4.修改职工信息\t\t\t*\n"
+			<< "*\t\t5.删除职工信息\t\t\t*\n"
+			<< "*\t\t6.\t\t\t\t*\n"
+			<< "*\t\t\t\t\t\t*\n"
+			<< "*************************************************\n"
+			<< endl;
+		cout << "\t\t选择：";
+		cin >> i;
+		switch (i)
+		{
+		case 1:
+			L.Add(p);
+			break;
+		case 2:
+			L.Add(p);
+			break;
+		case 3:
+			L.Search(p);
+			break;
+		case 4:
+			L.Modify(p);
+			break;
+		case 5:
+			L.Delete(p);
+			break;
+		}
+	} while (i != 0);
 	return ERROR;
 }
