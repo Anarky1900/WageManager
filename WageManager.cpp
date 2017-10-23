@@ -278,21 +278,37 @@ public:
 	int Length(TList &T);//长度
 	void ShowList(PList &L);//打印Lp 链表
 	void ShowList(TList &T);//打印Tp 链表
+	void ClearList(PList &L);
+	void ClearList(TList &T);
 	void Count(PList &L);//
 	void Count(TList &T);//
 	void CountIncome(PList &L);//计算实际工资
 	void CountIncome(TList &T);//计算实际工资
+	void DestroyList(PList &L);//销毁链表
+	void DestroyList(TList &T);//销毁链表
 };
+
+//销毁链表
+void List::DestroyList(PList &L)
+{
+	ClearList(L);
+	free(L);
+	cout << "\t\t成功释放空间！\n";
+}
+
+//销毁链表
+void List::DestroyList(TList &T)
+{
+	ClearList(T);
+	free(T);
+	cout << "\t\t成功释放空间！\n";
+}
+
 //计算PL实际工资
 void List::CountIncome(PList &L)
 {
 	double sum = 0;
 	PerStuff *p = L;
-	if (IsEmpty(L))
-	{
-		cout << "这是空表！！！";
-		return;
-	}
 	while (p->next != NULL)
 	{
 		p = p->next;
@@ -305,11 +321,6 @@ void List::CountIncome(TList &T)
 {
 	double sum = 0;
 	TempStuff *p = T;
-	if (IsEmpty(T))
-	{
-		cout << "这是空表！！！";
-		return;
-	}
 	while (p->next != NULL)
 	{
 		p = p->next;
@@ -746,6 +757,7 @@ void List::Copy(PList &L, PList &L1)
 		tp->SetIncome(p->GetIncome());
 		while (p1->next != NULL)
 			p1 = p1->next;
+		tp->next = p1->next;
 		p1->next = tp;
 		p1 = tp;
 	}
@@ -773,6 +785,7 @@ void List::Copy(TList &T, TList &T1)
 		tp->SetIncome(p->GetIncome());
 		while (p1->next != NULL)
 			p1 = p1->next;
+		tp->next = p1->next;
 		p1->next = tp;
 		p1 = tp;
 	}
@@ -815,7 +828,7 @@ void List::ShowList(TList &T)
 
 }
 
-//搜索PL
+//搜索PL        BUG 未考虑没有搜索到的结果
 void List::Search(PList &L)
 {
 	string id;
@@ -824,7 +837,7 @@ void List::Search(PList &L)
 	cin >> id;
 	if (IsEmpty(L))
 	{
-		cout << "\n这是空表！";
+		cout << "\n不存在该位成员，这是空表！";
 		return;
 	}
 	while (p->next != NULL&&p->next->GetId() != id)
@@ -846,7 +859,7 @@ void List::Search(PList &L)
 
 }
 
-//搜索TL
+//搜索TL		 BUG 未考虑没有搜索到的结果
 void List::Search(TList &T)
 {
 	string id;
@@ -855,7 +868,7 @@ void List::Search(TList &T)
 	cin >> id;
 	if (IsEmpty(T))
 	{
-		cout << "\n这是空表！";
+		cout << "\n不存在该位成员，这是空表！";
 		return;
 	}
 	while (p->next != NULL&&p->next->GetId() != id)
@@ -868,14 +881,47 @@ void List::Search(TList &T)
 		<< "年龄：" << p->GetAge() << endl
 		<< "家庭住址：" << p->GetAdr() << endl
 		<< "基本职务工资：" << p->GetWage() << endl
-		<< "\n奖金：" << p->GetReward() << "\n所得税：" << p->GetTax()
+		<< "奖金：" << p->GetReward() << endl
+		<< "所得税：" << p->GetTax() << endl
 		<< "实发工资：" << p->GetIncome() << endl;
+}
+
+//清空链表PL
+void List::ClearList(PList &L)
+{
+	while (L->next != NULL)
+	{
+		PerStuff* p = L;
+		p = L->next;
+		L->next = p->next;
+		free(p);
+	}
+	if (IsEmpty(L))
+		cout << "\t\t清除成功！";
+}
+
+//清空链表TL
+void List::ClearList(TList &T)
+{
+	while (T->next != NULL)
+	{
+		TempStuff* p = T;
+		p = T->next;
+		T->next= p->next;
+		free(p);
+	}
+	if (IsEmpty(T))
+		cout << "\t\t清除成功！";
 }
 
 int main()
 {
 	List L;
-	PList p, p1;
+	PList p,p1;
+	TList k,k1;
+	L.InitList_L(k);
+	L.InitList_L(k1);
+	L.InitList_L(p1);
 	L.InitList_L(p);
 	int i = 0;
 	do {
@@ -883,35 +929,120 @@ int main()
 			<< "*\t\t\t\t\t\t*\n"
 			<< "*\t\t职工工资信息管理系统\t\t*\n"
 			<< "*\t\t\t\t\t\t*\n"
-			<< "*\t\t1.输入职工信息\t\t\t*\n"
-			<< "*\t\t2.插入职工信息\t\t\t*\n"
-			<< "*\t\t3.查询职工信息\t\t\t*\n"
-			<< "*\t\t4.修改职工信息\t\t\t*\n"
-			<< "*\t\t5.删除职工信息\t\t\t*\n"
-			<< "*\t\t6.\t\t\t\t*\n"
+			<< "*\t\t1.正式职工系统\t\t\t*\n"
+			<< "*\t\t2.临时职工系统\t\t\t*\n"
+			<< "*\t\t0.退出\t\t\t\t*\n"
 			<< "*\t\t\t\t\t\t*\n"
-			<< "*************************************************\n"
-			<< endl;
+			<< "*************************************************\n" << endl;
 		cout << "\t\t选择：";
 		cin >> i;
 		switch (i)
 		{
-		case 1:
-			L.Add(p);
-			break;
 		case 2:
-			L.Add(p);
+			//此处读入数据到临时职工链表，并返回结果
+
+			L.Copy(k,k1);										//备份数据，做恢复使用
+			do {
+				cout << "\n*************************************************\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*\t职工工资信息管理系统(临时职工）\t\t*\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*\t\t1.输入职工信息\t\t\t*\n"
+					<< "*\t\t2.插入职工信息\t\t\t*\n"
+					<< "*\t\t3.查询职工信息\t\t\t*\n"
+					<< "*\t\t4.修改职工信息\t\t\t*\n"
+					<< "*\t\t5.删除职工信息\t\t\t*\n"
+					<< "*\t\t6.恢复到本次初始状态\t\t*\n"
+					<< "*\t\t0.退出\t\t\t\t*\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*************************************************\n"
+					<< endl;
+				cout << "\t\t选择：";
+				cin >> i;
+				switch (i)
+				{
+				case 1:
+					L.Add(k);
+					break;
+				case 2:
+					L.Add(k);
+					break;
+				case 3:
+					L.Search(k);
+					break;
+				case 4:
+					L.Modify(k);
+					break;
+				case 5:
+					L.Delete(k);
+					break;
+				case 6:
+					L.ClearList(k);
+					L.Copy(k1, k);
+					cout << "\n\t\t恢复成功！";
+					break;
+				}
+			} while (i != 0);
+			L.DestroyList(k);//销毁临时链表
+			L.DestroyList(k1);
+			return ERROR;
 			break;
-		case 3:
-			L.Search(p);
+		case 1:
+			//此处读入数据到正式职工链表，并返回结果
+
+			L.Copy(p, p1);										//备份数据，做恢复使用
+
+			L.ShowList(p);
+			do {
+				cout<< "\n*************************************************\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*\t职工工资信息管理系统（正式职工）\t*\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*\t\t1.输入职工信息\t\t\t*\n"
+					<< "*\t\t2.插入职工信息\t\t\t*\n"
+					<< "*\t\t3.查询职工信息\t\t\t*\n"
+					<< "*\t\t4.修改职工信息\t\t\t*\n"
+					<< "*\t\t5.删除职工信息\t\t\t*\n"
+					<< "*\t\t6.恢复到本次初始状态\t\t*\n"
+					<< "*\t\t0.退出\t\t\t\t*\n"
+					<< "*\t\t\t\t\t\t*\n"
+					<< "*************************************************\n"
+					<< endl;
+				cout<< "\t\t选择：";
+				cin >> i;
+				switch (i)
+				{
+				case 1:
+					L.Add(p);
+					break;
+				case 2:
+					L.Add(p);
+					break;
+				case 3:
+					L.Search(p);
+					break;
+				case 4:
+					L.Modify(p);
+					break;
+				case 5:
+					L.Delete(p);
+					break;
+				case 6:
+					L.ClearList(p);
+					L.Copy(p1, p);
+					cout << "\n\t\t恢复成功！";
+					break;
+				}
+			} while (i != 0);
+			//此处保存p链表数据
+
+			L.DestroyList(p);//销毁p链表
+			L.DestroyList(p1);
+			return ERROR;
 			break;
-		case 4:
-			L.Modify(p);
-			break;
-		case 5:
-			L.Delete(p);
+		default:
+
 			break;
 		}
 	} while (i != 0);
-	return ERROR;
 }
